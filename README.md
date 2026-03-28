@@ -81,7 +81,7 @@ docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
 
 | Service | Image |
 |---|---|
-| CTFd app | `nitekry/ccon_ctfd:v2.1` |
+| CTFd app | `nitekry/ccon_ctfd:v2.0` |
 | Database | `mariadb:10.11` |
 | Cache | `redis:4` |
 | Proxy | `nginx:stable` |
@@ -94,8 +94,8 @@ docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
 1. Edit files in `./themes/` or `./plugins/`
 2. Rebuild and push:
 ```bash
-docker build -t nitekry/ccon_ctfd:v2.x .
-docker push nitekry/ccon_ctfd:v2.x
+docker build -t nitekry/ccon_ctfd:v2.0 .
+docker push nitekry/ccon_ctfd:v2.0
 ```
 3. Update version in `docker-compose.yml`
 4. Commit and push to GitHub
@@ -140,4 +140,3 @@ docker compose down -v
 | M1/M2/M3 image won't start | Add `platform: linux/amd64` under `ctfd:` in compose |
 | Wrong container name | Run `docker ps` and substitute actual name |
 | Uploads missing | Re-run Step 5 with correct container name from `docker ps` |
-EOF
