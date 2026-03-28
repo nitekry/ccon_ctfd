@@ -1,9 +1,5 @@
 # CCON CTFd Platform
 
-Custom CTFd deployment with terminal-theme (green phosphor / CRT aesthetic).
-
-**Stack:** CTFd · MariaDB 10.11 · Redis 4 · Nginx
-
 ---
 
 ## Prerequisites
