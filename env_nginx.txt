@@ -1,0 +1,9 @@
+ACME_VERSION=0.3.1
+DYNPKG_RELEASE=1~trixie
+HOME=/root
+HOSTNAME=a474257fb628
+NGINX_VERSION=1.28.2
+NJS_RELEASE=1~trixie
+NJS_VERSION=0.9.5
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PKG_RELEASE=1~trixie

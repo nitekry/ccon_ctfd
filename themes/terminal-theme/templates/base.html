@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ get_config("ctf_name") }}{% endblock %}</title>
+    <meta name="description" content="{{ get_config("ctf_description") }}">
+    <link rel="shortcut icon" href="{{ Configs.ctf_small_icon }}" type="image/x-icon">
+
+    {{ meta | safe }}
+
+    {{ Assets.css("main.css") }}
+    {{ Plugins.styles }}
+
+    {{ Assets.js("assets/js/color_mode_switcher.js", type=None) }}
+
+    <script type="text/javascript">
+        window.init = {
+            'urlRoot': "{{ request.script_root }}",
+            'csrfNonce': "{{ Session.nonce }}",
+            'userMode': "{{ Configs.user_mode }}",
+            'userId': {{ Session.id }},
+            'userName': {{ User.name | tojson }},
+            'userEmail': {{ User.email | tojson }},
+            'userVerified': {{ User.verified | tojson }},
+            'teamId': {{ Team.id | tojson }},
+            'teamName': {{ Team.name | tojson }},
+            'start': {{ Configs.start | tojson }},
+            'end': {{ Configs.end | tojson }},
+            'themeSettings': {{ Configs.theme_settings | tojson }},
+            'eventSounds': [
+                "/themes/terminal-theme/static/sounds/notification.webm",
+                "/themes/terminal-theme/static/sounds/notification.mp3",
+            ],
+        }
+    </script>
+
+    {{ Configs.theme_header }}
+
+    {% block stylesheets %}{% endblock %}
+    <style>
+    .challenge-desc img, .modal-body img, .challenge-desc video, .modal-body video {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+    </style>
+</head>
+<body>
+    {% block navbar %}
+    {% include "components/navbar.html" %}
+    {% endblock %}
+
+    {% include "components/snackbar.html" %}
+
+    <main class="container container-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <span class="text-muted">
+                &gt; Powered by <a href="https://ctfd.io" target="_blank">CTFd</a> |
+                {{ Configs.ctf_name }}
+            </span>
+        </div>
+    </footer>
+
+    {% include "components/notifications.html" %}
+
+    {% block scripts %}
+        {{ Assets.js("assets/js/page.js") }}
+    {% endblock %}
+
+    {{ Plugins.scripts }}
+    {{ Configs.theme_footer }}
+</body>
+</html>

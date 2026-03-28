@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Theme Config | {{ get_config("ctf_name") }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4 text-glow">THEME CONFIGURATION</h2>
+        <div class="card">
+            <div class="card-header">TERMINAL THEME SETTINGS</div>
+            <div class="card-body">
+                <p class="text-muted">
+                    &gt; This theme has no additional configuration options.
+                    Customize via SCSS variables in <code>assets/scss/main.scss</code>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

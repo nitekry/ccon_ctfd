@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Users | {{ get_config("ctf_name") }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="text-glow">OPERATORS</h2>
+    <p class="text-muted" style="font-size: 0.8rem;">&gt; Registered operatives_</p>
+</div>
+
+<div x-data="UsersList" x-init="init()">
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Search operators..."
+               x-model="query" @input.debounce.300ms="search()">
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>HANDLE</th>
+                            <th>AFFILIATION</th>
+                            <th class="text-end">SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="user in users" :key="user.id">
+                            <tr>
+                                <td x-text="user.pos || '-'"></td>
+                                <td>
+                                    <a :href="'/users/' + user.id" x-text="user.name"></a>
+                                </td>
+                                <td class="text-muted" x-text="user.affiliation || '-'"></td>
+                                <td class="text-end" x-text="user.score"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('UsersList', () => ({
+        users: [],
+        query: '',
+
+        async init() {
+            await this.search();
+        },
+
+        async search() {
+            let url = '/api/v1/users';
+            if (this.query) url += `?q=${encodeURIComponent(this.query)}&field=name`;
+            const resp = await CTFd.fetch(url, { credentials: 'same-origin' });
+            const data = await resp.json();
+            this.users = data.data || [];
+        }
+    }));
+});
+</script>
+{% endblock %}

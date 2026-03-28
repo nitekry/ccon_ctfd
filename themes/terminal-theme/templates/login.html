@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Login | {{ get_config("ctf_name") }}{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-header">
+        <h2 class="text-glow">AUTHENTICATE</h2>
+        <p class="text-muted" style="font-size: 0.8rem;">&gt; Access terminal session_</p>
+    </div>
+
+    {% include "components/errors.html" %}
+
+    {% if integrations.mlc() %}
+    <a class="btn btn-secondary btn-lg btn-block w-100 mb-3" href="{{ url_for('auth.oauth_login') }}">
+        Login with Major League Cyber
+    </a>
+    <hr>
+    {% endif %}
+
+    <div class="card">
+        <div class="card-body p-4">
+            {% with form = Forms.auth.LoginForm() %}
+            <form method="post" accept-charset="utf-8">
+                <div class="mb-3">
+                    <label class="form-label">&gt; USERNAME / EMAIL</label>
+                    {{ form.name(class="form-control", placeholder="enter_credentials", autofocus=True, autocomplete="username email") }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">&gt; PASSWORD</label>
+                    {{ form.password(class="form-control", placeholder="••••••••", autocomplete="current-password") }}
+                </div>
+
+                <div class="d-grid mt-4">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+
+                {{ form.nonce() }}
+            </form>
+            {% endwith %}
+        </div>
+        <div class="card-footer text-center py-3">
+            <small>
+                <a href="{{ url_for('auth.reset_password') }}" class="text-muted">Forgot password?</a>
+            </small>
+            {% if Configs.registration_visibility != "private" %}
+            <br>
+            <small>
+                <a href="{{ url_for('auth.register') }}">&gt; Create new account</a>
+            </small>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

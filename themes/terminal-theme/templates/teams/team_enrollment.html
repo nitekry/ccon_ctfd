@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Team Setup | {{ get_config("ctf_name") }}{% endblock %}
+
+{% block content %}
+<div class="auth-container" style="max-width: 550px;">
+    <div class="auth-header">
+        <h2 class="text-glow">TEAM SETUP</h2>
+        <p class="text-muted" style="font-size: 0.8rem;">&gt; Select operation mode_</p>
+    </div>
+
+    {% include "components/errors.html" %}
+
+    <div class="row g-3">
+        <div class="col-6">
+            <a href="{{ url_for('teams.new') }}" class="text-decoration-none">
+                <div class="card h-100 text-center">
+                    <div class="card-body py-5">
+                        <div class="h1 mb-3" style="font-size: 2.5rem;">+</div>
+                        <h5>CREATE</h5>
+                        <small class="text-muted">Form a new squad</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-6">
+            <a href="{{ url_for('teams.join') }}" class="text-decoration-none">
+                <div class="card h-100 text-center">
+                    <div class="card-body py-5">
+                        <div class="h1 mb-3" style="font-size: 2.5rem;">&gt;</div>
+                        <h5>JOIN</h5>
+                        <small class="text-muted">Link to existing squad</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

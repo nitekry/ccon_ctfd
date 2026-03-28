@@ -1,0 +1,962 @@
+// ============================================================
+// CTFd Terminal Theme - Dark Hacker/Terminal Aesthetic
+// ============================================================
+
+// -- Google Font import (IBM Plex Mono + Share Tech Mono) --
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Share+Tech+Mono&display=swap');
+
+// ============================================================
+// Bootstrap 5 Variable Overrides (BEFORE importing Bootstrap)
+// ============================================================
+
+// -- Terminal Color Palette --
+$terminal-black:      #0a0a0a;
+$terminal-bg:         #0d1117;
+$terminal-surface:    #131a24;
+$terminal-border:     #1a2332;
+$terminal-green:      #00ff41;
+$terminal-green-dim:  #00cc33;
+$terminal-green-muted:#0a6e2e;
+$terminal-amber:      #ffb000;
+$terminal-red:        #ff3333;
+$terminal-cyan:       #00e5ff;
+$terminal-white:      #c9d1d9;
+$terminal-gray:       #8b949e;
+$terminal-gray-dark:  #30363d;
+
+// -- Bootstrap Theme Colors --
+$primary:       $terminal-green;
+$secondary:     $terminal-gray;
+$success:       $terminal-green;
+$info:          $terminal-cyan;
+$warning:       $terminal-amber;
+$danger:        $terminal-red;
+$light:         $terminal-gray-dark;
+$dark:          $terminal-black;
+
+$body-bg:       $terminal-bg;
+$body-color:    $terminal-green;
+
+// -- Typography --
+$font-family-base:      'IBM Plex Mono', 'Courier New', monospace;
+$font-family-monospace:  'Share Tech Mono', 'IBM Plex Mono', monospace;
+$headings-font-family:   'Share Tech Mono', monospace;
+$font-size-base:        0.9rem;
+$headings-font-weight:  600;
+$headings-color:        $terminal-green;
+
+// -- Links --
+$link-color:            $terminal-green;
+$link-hover-color:      lighten($terminal-green, 15%);
+$link-decoration:       none;
+$link-hover-decoration: underline;
+
+// -- Borders --
+$border-color:  $terminal-border;
+$border-radius: 2px;
+$border-radius-sm: 1px;
+$border-radius-lg: 3px;
+
+// -- Cards --
+$card-bg:           $terminal-surface;
+$card-border-color: $terminal-border;
+$card-cap-bg:       rgba($terminal-green, 0.06);
+$card-color:        $terminal-green;
+
+// -- Inputs & Forms --
+$input-bg:              $terminal-black;
+$input-color:           $terminal-green;
+$input-border-color:    $terminal-border;
+$input-focus-border-color: $terminal-green;
+$input-focus-box-shadow:   0 0 0 2px rgba($terminal-green, 0.2);
+$input-placeholder-color:  $terminal-gray;
+
+// -- Buttons --
+$btn-border-radius: 2px;
+
+// -- Navbar --
+$navbar-dark-color:         $terminal-green;
+$navbar-dark-hover-color:   lighten($terminal-green, 15%);
+$navbar-dark-active-color:  $terminal-green;
+$navbar-dark-brand-color:   $terminal-green;
+
+// -- Dropdowns --
+$dropdown-bg:           $terminal-surface;
+$dropdown-border-color: $terminal-border;
+$dropdown-link-color:   $terminal-green;
+$dropdown-link-hover-bg: rgba($terminal-green, 0.1);
+
+// -- Tables --
+$table-color:       $terminal-green;
+$table-bg:          transparent;
+$table-border-color: $terminal-border;
+$table-striped-bg:   rgba($terminal-green, 0.03);
+$table-hover-bg:     rgba($terminal-green, 0.06);
+
+// -- Modals --
+$modal-content-bg:              $terminal-surface;
+$modal-content-border-color:    $terminal-border;
+$modal-header-border-color:     $terminal-border;
+$modal-footer-border-color:     $terminal-border;
+
+// -- Alerts --
+$alert-bg-scale:    -90%;
+$alert-border-scale: -70%;
+$alert-color-scale:  20%;
+
+// -- Badges --
+$badge-font-weight: 500;
+
+// -- Pagination --
+$pagination-bg:             $terminal-surface;
+$pagination-border-color:   $terminal-border;
+$pagination-color:          $terminal-green;
+$pagination-hover-bg:       rgba($terminal-green, 0.1);
+$pagination-hover-color:    $terminal-green;
+$pagination-active-bg:      $terminal-green;
+$pagination-active-color:   $terminal-black;
+$pagination-disabled-bg:    $terminal-black;
+$pagination-disabled-color: $terminal-gray;
+
+// ============================================================
+// Import Bootstrap
+// ============================================================
+@import "bootstrap/scss/bootstrap";
+
+// ============================================================
+// Terminal Theme Custom Styles
+// ============================================================
+
+// -- Global Terminal Effects --
+html {
+  scrollbar-color: $terminal-green-muted $terminal-black;
+  scrollbar-width: thin;
+}
+
+body {
+  background-color: $terminal-bg;
+  color: $terminal-green;
+  font-family: $font-family-base;
+  line-height: 1.7;
+  position: relative;
+  min-height: 100vh;
+
+  // CRT scanline overlay
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.03) 0px,
+      rgba(0, 0, 0, 0.03) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+  }
+}
+
+::selection {
+  background: $terminal-green;
+  color: $terminal-black;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: $terminal-black;
+}
+::-webkit-scrollbar-thumb {
+  background: $terminal-green-muted;
+  border-radius: 0;
+  &:hover {
+    background: $terminal-green-dim;
+  }
+}
+
+// -- Text glow utility --
+.text-glow {
+  text-shadow: 0 0 8px rgba($terminal-green, 0.6),
+               0 0 20px rgba($terminal-green, 0.3);
+}
+
+// -- Headings --
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: $terminal-green;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 10px rgba($terminal-green, 0.4);
+}
+
+// -- Navbar --
+.navbar {
+  background-color: rgba($terminal-black, 0.95) !important;
+  border-bottom: 1px solid $terminal-border;
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1rem;
+
+  .navbar-brand {
+    font-family: $headings-font-family;
+    font-size: 1.3rem;
+    color: $terminal-green !important;
+    text-shadow: 0 0 15px rgba($terminal-green, 0.5);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+
+    &::before {
+      content: '> ';
+      opacity: 0.7;
+    }
+  }
+
+  .nav-link {
+    font-family: $font-family-base;
+    font-size: 0.85rem;
+    color: $terminal-green-dim !important;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+    position: relative;
+
+    &:hover, &.active {
+      color: $terminal-green !important;
+      text-shadow: 0 0 8px rgba($terminal-green, 0.5);
+    }
+
+    &::before {
+      content: '[ ';
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    &::after {
+      content: ' ]';
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    &:hover::before,
+    &:hover::after,
+    &.active::before,
+    &.active::after {
+      opacity: 0.6;
+    }
+  }
+}
+
+// -- Cards (Terminal Panels) --
+.card {
+  background-color: $terminal-surface;
+  border: 1px solid $terminal-border;
+  border-radius: $border-radius;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba($terminal-green, 0.03);
+
+  .card-header {
+    background-color: rgba($terminal-green, 0.05);
+    border-bottom: 1px solid $terminal-border;
+    font-family: $headings-font-family;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+    color: $terminal-green;
+
+    &::before {
+      content: '┌─ ';
+      opacity: 0.5;
+    }
+  }
+
+  .card-body {
+    color: $terminal-green;
+  }
+
+  .card-footer {
+    background-color: rgba($terminal-green, 0.03);
+    border-top: 1px solid $terminal-border;
+  }
+}
+
+// -- Buttons --
+.btn-primary {
+  background-color: transparent;
+  border: 1px solid $terminal-green;
+  color: $terminal-green;
+  font-family: $font-family-base;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+
+  &:hover, &:focus {
+    background-color: $terminal-green;
+    color: $terminal-black;
+    box-shadow: 0 0 15px rgba($terminal-green, 0.4),
+                0 0 30px rgba($terminal-green, 0.1);
+  }
+
+  &:active {
+    background-color: $terminal-green-dim;
+    border-color: $terminal-green-dim;
+    color: $terminal-black;
+  }
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid $terminal-gray-dark;
+  color: $terminal-gray;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &:hover, &:focus {
+    border-color: $terminal-green-dim;
+    color: $terminal-green-dim;
+    background-color: transparent;
+  }
+}
+
+.btn-outline-primary {
+  border-color: $terminal-green;
+  color: $terminal-green;
+  &:hover {
+    background-color: $terminal-green;
+    color: $terminal-black;
+  }
+}
+
+.btn-outline-secondary {
+  border-color: $terminal-gray-dark;
+  color: $terminal-gray;
+  &:hover {
+    background-color: $terminal-gray-dark;
+    color: $terminal-green;
+  }
+}
+
+.btn-success {
+  background-color: $terminal-green;
+  border-color: $terminal-green;
+  color: $terminal-black;
+  font-weight: 600;
+  &:hover {
+    background-color: lighten($terminal-green, 10%);
+    box-shadow: 0 0 15px rgba($terminal-green, 0.5);
+  }
+}
+
+.btn-danger {
+  background-color: transparent;
+  border-color: $terminal-red;
+  color: $terminal-red;
+  &:hover {
+    background-color: $terminal-red;
+    color: $terminal-black;
+  }
+}
+
+.btn-warning {
+  background-color: transparent;
+  border-color: $terminal-amber;
+  color: $terminal-amber;
+  &:hover {
+    background-color: $terminal-amber;
+    color: $terminal-black;
+  }
+}
+
+// -- Forms --
+.form-control, .form-select {
+  background-color: $terminal-black;
+  border: 1px solid $terminal-border;
+  color: $terminal-green;
+  font-family: $font-family-base;
+  border-radius: $border-radius;
+
+  &:focus {
+    background-color: $terminal-black;
+    border-color: $terminal-green;
+    color: $terminal-green;
+    box-shadow: 0 0 0 2px rgba($terminal-green, 0.15),
+                0 0 15px rgba($terminal-green, 0.1);
+  }
+
+  &::placeholder {
+    color: $terminal-gray;
+    font-style: italic;
+  }
+}
+
+.form-label {
+  color: $terminal-green-dim;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+
+.form-check-input {
+  background-color: $terminal-black;
+  border-color: $terminal-border;
+
+  &:checked {
+    background-color: $terminal-green;
+    border-color: $terminal-green;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgba($terminal-green, 0.2);
+  }
+}
+
+// -- Tables --
+.table {
+  color: $terminal-green;
+  font-size: 0.85rem;
+
+  th {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.75rem;
+    color: $terminal-green-dim;
+    border-bottom-color: $terminal-border;
+    font-weight: 500;
+  }
+
+  td {
+    border-bottom-color: rgba($terminal-border, 0.5);
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    transition: background-color 0.1s ease;
+
+    &:hover {
+      background-color: rgba($terminal-green, 0.04) !important;
+    }
+  }
+}
+
+// -- Badges --
+.badge {
+  font-family: $font-family-base;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  border-radius: 1px;
+}
+
+.bg-primary {
+  background-color: rgba($terminal-green, 0.15) !important;
+  color: $terminal-green !important;
+  border: 1px solid rgba($terminal-green, 0.3);
+}
+
+.bg-success {
+  background-color: rgba($terminal-green, 0.15) !important;
+  color: $terminal-green !important;
+}
+
+.bg-warning {
+  background-color: rgba($terminal-amber, 0.15) !important;
+  color: $terminal-amber !important;
+}
+
+.bg-danger {
+  background-color: rgba($terminal-red, 0.15) !important;
+  color: $terminal-red !important;
+}
+
+.bg-info {
+  background-color: rgba($terminal-cyan, 0.15) !important;
+  color: $terminal-cyan !important;
+}
+
+// -- Modals --
+.modal-content {
+  background-color: $terminal-surface;
+  border: 1px solid $terminal-green-muted;
+  box-shadow: 0 0 30px rgba($terminal-green, 0.1),
+              0 0 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  border-bottom-color: $terminal-border;
+
+  .modal-title {
+    font-family: $headings-font-family;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: $terminal-green;
+  }
+
+  .btn-close {
+    filter: invert(1) sepia(1) saturate(5) hue-rotate(85deg);
+  }
+}
+
+.modal-footer {
+  border-top-color: $terminal-border;
+}
+
+// -- Alerts --
+.alert {
+  border-radius: $border-radius;
+  font-size: 0.85rem;
+  border-width: 1px;
+  border-left-width: 3px;
+}
+
+.alert-success {
+  background-color: rgba($terminal-green, 0.08);
+  border-color: rgba($terminal-green, 0.3);
+  color: $terminal-green;
+}
+
+.alert-danger {
+  background-color: rgba($terminal-red, 0.08);
+  border-color: rgba($terminal-red, 0.3);
+  color: $terminal-red;
+}
+
+.alert-warning {
+  background-color: rgba($terminal-amber, 0.08);
+  border-color: rgba($terminal-amber, 0.3);
+  color: $terminal-amber;
+}
+
+.alert-info {
+  background-color: rgba($terminal-cyan, 0.08);
+  border-color: rgba($terminal-cyan, 0.3);
+  color: $terminal-cyan;
+}
+
+// -- Pagination --
+.page-link {
+  font-family: $font-family-base;
+  font-size: 0.8rem;
+}
+
+// -- Challenge Categories --
+.challenge-category {
+  font-family: $headings-font-family;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: $terminal-green;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed $terminal-border;
+
+  &::before {
+    content: '── ';
+    opacity: 0.4;
+  }
+  &::after {
+    content: ' ──';
+    opacity: 0.4;
+  }
+}
+
+// -- Challenge Buttons / Tiles --
+.challenge-button {
+  background-color: $terminal-surface;
+  border: 1px solid $terminal-border;
+  color: $terminal-green;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba($terminal-green, 0.03), transparent);
+    transition: opacity 0.2s ease;
+    opacity: 0;
+  }
+
+  &:hover {
+    border-color: $terminal-green-dim;
+    box-shadow: 0 0 15px rgba($terminal-green, 0.15);
+    transform: translateY(-1px);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &.solved {
+    border-color: $terminal-green-muted;
+    background-color: rgba($terminal-green, 0.05);
+
+    &::after {
+      content: '✓ SOLVED';
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      margin-top: 0.5rem;
+      color: $terminal-green;
+      opacity: 0.8;
+    }
+  }
+
+  .challenge-name {
+    font-family: $headings-font-family;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+  }
+
+  .challenge-points {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: $terminal-green;
+    text-shadow: 0 0 10px rgba($terminal-green, 0.3);
+  }
+}
+
+// -- Scoreboard --
+.scoreboard-row {
+  &.first-place {
+    border-left: 3px solid $terminal-green;
+    background-color: rgba($terminal-green, 0.05);
+  }
+  &.second-place {
+    border-left: 3px solid $terminal-amber;
+  }
+  &.third-place {
+    border-left: 3px solid $terminal-cyan;
+  }
+}
+
+// -- Jumbotron / Hero --
+.jumbotron, .ctf-header {
+  background-color: $terminal-black;
+  border: 1px solid $terminal-border;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+
+  h1 {
+    font-family: $headings-font-family;
+    font-size: 2.5rem;
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 20px rgba($terminal-green, 0.5),
+                 0 0 40px rgba($terminal-green, 0.2);
+  }
+
+  p {
+    color: $terminal-green-dim;
+    font-size: 0.9rem;
+  }
+}
+
+// -- Footer --
+footer, .footer {
+  background-color: $terminal-black;
+  border-top: 1px solid $terminal-border;
+  color: $terminal-gray;
+  font-size: 0.75rem;
+  padding: 1rem 0;
+
+  a {
+    color: $terminal-green-dim;
+    &:hover {
+      color: $terminal-green;
+    }
+  }
+}
+
+// -- Misc Utilities --
+.text-muted {
+  color: $terminal-gray !important;
+}
+
+.text-primary {
+  color: $terminal-green !important;
+}
+
+.border {
+  border-color: $terminal-border !important;
+}
+
+hr {
+  border-color: $terminal-border;
+  opacity: 0.5;
+}
+
+// -- Code blocks --
+pre, code {
+  font-family: $font-family-monospace;
+  background-color: $terminal-black;
+  color: $terminal-green;
+  border: 1px solid $terminal-border;
+  border-radius: $border-radius;
+}
+
+pre {
+  padding: 1rem;
+}
+
+code {
+  padding: 0.15em 0.4em;
+  font-size: 0.85em;
+}
+
+// -- Blinking cursor animation --
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '█';
+  animation: blink 1s infinite;
+  color: $terminal-green;
+}
+
+// -- Terminal prompt prefix --
+.terminal-prompt::before {
+  content: 'root@ctf:~# ';
+  color: $terminal-green-dim;
+  font-size: 0.85em;
+}
+
+// -- Typing animation --
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+// -- Toast / Notifications --
+.toast {
+  background-color: $terminal-surface;
+  border: 1px solid $terminal-border;
+  color: $terminal-green;
+}
+
+// -- Breadcrumbs --
+.breadcrumb {
+  background-color: transparent;
+  font-size: 0.8rem;
+
+  .breadcrumb-item {
+    color: $terminal-gray;
+
+    &.active {
+      color: $terminal-green;
+    }
+
+    a {
+      color: $terminal-green-dim;
+    }
+
+    + .breadcrumb-item::before {
+      content: '/';
+      color: $terminal-gray;
+    }
+  }
+}
+
+// -- Accordions --
+.accordion-item {
+  background-color: $terminal-surface;
+  border-color: $terminal-border;
+}
+
+.accordion-button {
+  background-color: $terminal-surface;
+  color: $terminal-green;
+  font-family: $font-family-base;
+
+  &:not(.collapsed) {
+    background-color: rgba($terminal-green, 0.05);
+    color: $terminal-green;
+    box-shadow: none;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgba($terminal-green, 0.15);
+  }
+
+  &::after {
+    filter: invert(1) sepia(1) saturate(5) hue-rotate(85deg);
+  }
+}
+
+// -- List groups --
+.list-group-item {
+  background-color: $terminal-surface;
+  border-color: $terminal-border;
+  color: $terminal-green;
+
+  &.active {
+    background-color: rgba($terminal-green, 0.1);
+    border-color: $terminal-green;
+    color: $terminal-green;
+  }
+}
+
+// -- Spinners --
+.spinner-border {
+  color: $terminal-green;
+}
+
+// -- Progress bars --
+.progress {
+  background-color: $terminal-black;
+  border: 1px solid $terminal-border;
+  border-radius: $border-radius;
+  height: 0.5rem;
+}
+
+.progress-bar {
+  background-color: $terminal-green;
+  box-shadow: 0 0 8px rgba($terminal-green, 0.5);
+}
+
+// -- Main content container --
+.container-main {
+  min-height: calc(100vh - 120px);
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+// -- Login / Register specific --
+.auth-container {
+  max-width: 440px;
+  margin: 3rem auto;
+
+  .auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-family: $headings-font-family;
+      font-size: 1.5rem;
+      letter-spacing: 0.2em;
+    }
+  }
+
+  .form-control {
+    padding: 0.6rem 0.8rem;
+  }
+}
+
+// -- Decorative corner brackets --
+.terminal-box {
+  position: relative;
+  padding: 1.5rem;
+
+  &::before {
+    content: '┌──────────';
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: $terminal-green-muted;
+    font-size: 0.7rem;
+    opacity: 0.5;
+  }
+
+  &::after {
+    content: '──────────┘';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: $terminal-green-muted;
+    font-size: 0.7rem;
+    opacity: 0.5;
+  }
+}
+
+// -- Notification bell --
+.notification-badge {
+  background-color: $terminal-red !important;
+  color: $terminal-black !important;
+  font-size: 0.65rem;
+}
+
+// -- Chart overrides (for scoreboard graphs) --
+.ct-label {
+  color: $terminal-gray !important;
+  font-family: $font-family-base;
+  font-size: 0.7rem;
+}
+
+.ct-grid {
+  stroke: $terminal-border !important;
+}
+
+.ct-series-a .ct-line {
+  stroke: $terminal-green !important;
+}
+
+.ct-series-a .ct-point {
+  stroke: $terminal-green !important;
+}
+
+// -- Custom scrollbar for textareas --
+textarea {
+  scrollbar-color: $terminal-green-muted $terminal-black;
+  scrollbar-width: thin;
+}
+
+// -- Close button override --
+.btn-close {
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(85deg);
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// -- Tab overrides --
+.nav-tabs {
+  border-bottom-color: $terminal-border;
+
+  .nav-link {
+    color: $terminal-gray;
+    border-color: transparent;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+
+    &:hover {
+      border-color: $terminal-border;
+      color: $terminal-green-dim;
+    }
+
+    &.active {
+      background-color: $terminal-surface;
+      border-color: $terminal-border $terminal-border $terminal-surface;
+      color: $terminal-green;
+    }
+  }
+}
+
+.nav-pills {
+  .nav-link {
+    color: $terminal-green-dim;
+    border-radius: $border-radius;
+
+    &.active {
+      background-color: rgba($terminal-green, 0.1);
+      color: $terminal-green;
+      border: 1px solid $terminal-green-muted;
+    }
+  }
+}

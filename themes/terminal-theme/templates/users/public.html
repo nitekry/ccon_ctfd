@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.name }} | {{ get_config("ctf_name") }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">OPERATOR PROFILE</div>
+            <div class="card-body text-center">
+                <h3 class="text-glow mb-1">{{ user.name }}</h3>
+
+                {% if user.country %}
+                <p class="text-muted mb-2">{{ user.country }}</p>
+                {% endif %}
+
+                {% if user.affiliation %}
+                <p class="text-muted mb-2" style="font-size: 0.85rem;">{{ user.affiliation }}</p>
+                {% endif %}
+
+                {% if user.website %}
+                <a href="{{ user.website }}" target="_blank" class="d-block mb-2" style="font-size: 0.85rem;">
+                    &gt; {{ user.website }}
+                </a>
+                {% endif %}
+
+                <div class="mt-3">
+                    <div class="h2 text-glow">{{ score }}</div>
+                    <small class="text-muted">POINTS</small>
+                </div>
+
+                {% if place %}
+                <div class="mt-2">
+                    <div class="h4">{{ place }}</div>
+                    <small class="text-muted">RANK</small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">SOLVE LOG</div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>CHALLENGE</th>
+                                <th>CATEGORY</th>
+                                <th class="text-end">VALUE</th>
+                                <th class="text-end">TIME</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for solve in solves %}
+                            <tr>
+                                <td>{{ solve.challenge.name }}</td>
+                                <td class="text-muted">{{ solve.challenge.category }}</td>
+                                <td class="text-end">{{ solve.challenge.value }}</td>
+                                <td class="text-end text-muted" style="font-size: 0.8rem;">
+                                    {{ solve.date }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

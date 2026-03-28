@@ -1,0 +1,11 @@
+GOSU_VERSION=1.19
+HOME=/root
+HOSTNAME=8a4d562ac0e0
+LANG=C.UTF-8
+MARIADB_AUTO_UPGRADE=1
+MARIADB_DATABASE=ctfd
+MARIADB_PASSWORD=ctfd
+MARIADB_ROOT_PASSWORD=ctfd
+MARIADB_USER=ctfd
+MARIADB_VERSION=1:10.11.16+maria~ubu2204
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

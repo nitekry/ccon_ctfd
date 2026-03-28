@@ -1,0 +1,69 @@
+name: ctfd
+
+services:
+  ctfd:
+    image: nitekry/ccon_ctfd:v2.0
+    restart: always
+    depends_on:
+      - db
+      - cache
+    ports:
+      - "8000:8000"
+    environment:
+      ACCESS_LOG: '-'
+      ERROR_LOG: '-'
+      LOG_FOLDER: /var/log/CTFd
+      UPLOAD_FOLDER: /var/uploads
+      REVERSE_PROXY: "true"
+      DATABASE_URL: mysql+pymysql://${MARIADB_USER}:${MARIADB_PASSWORD}@db/${MARIADB_DATABASE}
+      REDIS_URL: redis://cache:6379
+      WORKERS: ${WORKERS}
+    volumes:
+      - ctfd_logs:/var/log/CTFd
+      - ctfd_uploads:/var/uploads
+    networks:
+      - default
+      - internal
+
+  db:
+    image: mariadb:10.11
+    restart: always
+    environment:
+      MARIADB_AUTO_UPGRADE: "1"
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - internal
+
+  cache:
+    image: redis:4
+    restart: always
+    networks:
+      - internal
+
+  nginx:
+    image: nginx:stable
+    restart: always
+    depends_on:
+      - ctfd
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - default
+
+networks:
+  default:
+  internal:
+    internal: true
+
+volumes:
+  ctfd_logs:
+  ctfd_uploads:
+  mysql_data:

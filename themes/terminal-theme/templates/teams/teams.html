@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Teams | {{ get_config("ctf_name") }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="text-glow">SQUADS</h2>
+    <p class="text-muted" style="font-size: 0.8rem;">&gt; Registered teams_</p>
+</div>
+
+<div x-data="TeamsList" x-init="init()">
+    <div class="mb-3">
+        <input type="text" class="form-control" placeholder="Search teams..."
+               x-model="query" @input.debounce.300ms="search()">
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>TEAM</th>
+                            <th>MEMBERS</th>
+                            <th class="text-end">SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="team in teams" :key="team.id">
+                            <tr>
+                                <td x-text="team.pos || '-'"></td>
+                                <td>
+                                    <a :href="'/teams/' + team.id" x-text="team.name"></a>
+                                </td>
+                                <td class="text-muted" x-text="team.member_count || '-'"></td>
+                                <td class="text-end" x-text="team.score"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('TeamsList', () => ({
+        teams: [],
+        query: '',
+
+        async init() {
+            await this.search();
+        },
+
+        async search() {
+            let url = '/api/v1/teams';
+            if (this.query) url += `?q=${encodeURIComponent(this.query)}&field=name`;
+            const resp = await CTFd.fetch(url, { credentials: 'same-origin' });
+            const data = await resp.json();
+            this.teams = data.data || [];
+        }
+    }));
+});
+</script>
+{% endblock %}

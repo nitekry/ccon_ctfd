@@ -1,0 +1,18 @@
+{% if get_notifications %}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+    {% for notification in get_notifications() %}
+    <div class="toast show mb-2" role="alert">
+        <div class="toast-header" style="background-color: rgba(0, 255, 65, 0.08); border-bottom: 1px solid #1a2332;">
+            <strong class="me-auto" style="color: #00ff41;">
+                &gt; {{ notification.title }}
+            </strong>
+            <small style="color: #8b949e;">{{ notification.date }}</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body">
+            {{ notification.content | safe }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
