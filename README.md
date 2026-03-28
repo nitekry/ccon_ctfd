@@ -30,7 +30,7 @@ nano .env    # set your passwords
 
 ### 3. Pull the Image
 ```bash
-docker pull nitekry/ccon_ctfd:v2.1
+docker pull nitekry/ccon_ctfd:v2.0
 ```
 
 ### 4. Start the Stack
@@ -51,13 +51,13 @@ docker compose up -d
 
 ### 5. Restore Challenge Uploads
 ```bash
-docker cp ./uploads/. $(docker ps --filter "ancestor=nitekry/ccon_ctfd:v2.1" --format "{{.Names}}" | head -1):/var/uploads/
+docker cp ./uploads/. $(docker ps --filter "ancestor=nitekry/ccon_ctfd:v2.0" --format "{{.Names}}" | head -1):/var/uploads/
 ```
 
 ### 6. Apply Theme (Required)
 ```bash
 docker cp ./themes/terminal-theme/. \
-  $(docker ps --filter "ancestor=nitekry/ccon_ctfd:v2.1" --format "{{.Names}}" | head -1):/opt/CTFd/CTFd/themes/terminal-theme/
+  $(docker ps --filter "ancestor=nitekry/ccon_ctfd:v2.0" --format "{{.Names}}" | head -1):/opt/CTFd/CTFd/themes/terminal-theme/
 
 docker compose restart ctfd
 ```
