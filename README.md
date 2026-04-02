@@ -1,10 +1,14 @@
 # CCON CTFd Platform
 
+Custom CTFd deployment with terminal-theme
+
+**Stack:** CTFd · MariaDB 10.11 · Redis 4 · Nginx
+
 ---
 
 ## Prerequisites
 
-- Docker Desktop (Mac/Windows) or Docker Engine (Linux)
+- Docker Desktop (Mac/Windows) or Docker Engine (Linux/Pi)
 - Git
 - Docker Hub access to `nitekry/ccon_ctfd`
 
@@ -31,24 +35,23 @@ docker pull nitekry/ccon_ctfd:v2.0
 
 ### 4. Start the Stack
 ```bash
-# Start DB and cache first
-docker compose up -d db cache
-
-# Wait for MariaDB to initialize
-sleep 10
-
-# Load the database
-docker exec -i $(docker ps --filter "ancestor=mariadb:10.11" --format "{{.Names}}") \
-  mysql -u root -p$(grep MARIADB_ROOT_PASSWORD .env | cut -d= -f2) ctfd < db/init.sql
-
-# Bring up the rest
+# Start the full stack
 docker compose up -d
+
+# Watch until CTFd is ready (look for gunicorn booting)
+docker compose logs -f ctfd
+# Press Ctrl+C once you see: [INFO] Booting worker with pid
 ```
 
-### 5. Restore Challenge Uploads
-```bash
-docker cp ./uploads/. $(docker ps --filter "ancestor=nitekry/ccon_ctfd:v2.0" --format "{{.Names}}" | head -1):/var/uploads/
-```
+### 5. Run the Setup Wizard
+Open your browser to:
+- `http://localhost` — public-facing site (via nginx)
+- `http://localhost:8000` — direct CTFd (bypasses nginx)
+
+Complete the CTFd setup wizard:
+- Set admin username, email, and password
+- Set CTF name and format
+- Click **Finish**
 
 ### 6. Apply Theme (Required)
 ```bash
@@ -61,10 +64,19 @@ docker compose restart ctfd
 > The `docker cp` injects the theme files into the running container.
 > Hard refresh your browser (`Cmd+Shift+R` / `Ctrl+Shift+R`) after restart.
 
-### 7. Verify
-Open your browser to:
-- `http://localhost` — public-facing site
-- `http://localhost:8000` — direct CTFd (bypasses nginx)
+Then go to **Admin → Config → Theme** and select `terminal-theme`.
+
+### 7. Restore Challenge Uploads (Optional)
+Only needed if restoring from an existing deployment:
+```bash
+docker cp ./uploads/. \
+  $(docker ps --filter "ancestor=nitekry/ccon_ctfd:v2.0" --format "{{.Names}}" | head -1):/var/uploads/
+```
+
+### 8. Import Challenges (Optional)
+To restore challenges from a previous CTFd instance:
+1. On the **source** CTFd: **Admin → Export** → download the `.zip`
+2. On the **new** CTFd: **Admin → Import** → upload the `.zip`
 
 ---
 
@@ -83,3 +95,54 @@ docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
 | Proxy | `nginx:stable` |
 
 ---
+
+## Making Changes
+
+### Theme / Plugin Updates
+1. Edit files in `./themes/` or `./plugins/`
+2. Rebuild with a bumped version tag:
+```bash
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t nitekry/ccon_ctfd:vX.X \
+  --push .
+```
+3. Update the version tag in `docker-compose.yml` and this README
+4. Commit and push to GitHub
+
+### Challenge File Updates
+```bash
+# Pull uploads out of running container
+docker cp \
+  $(docker ps --filter "ancestor=nitekry/ccon_ctfd:v2.0" --format "{{.Names}}" | head -1):/var/uploads/. \
+  ./uploads/
+
+git add uploads/
+git commit -m "chore: update uploads"
+git push
+```
+
+---
+
+## Teardown
+```bash
+# Stop stack (preserves data volumes)
+docker compose down
+
+# Full reset — wipes ALL data
+docker compose down -v
+```
+
+---
+
+## Troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| Theme loads but unstyled | Re-run Step 6, hard refresh browser (`Cmd+Shift+R`) |
+| Site not reachable on Pi | Use Pi's IP address instead of `localhost` |
+| Port 80 blocked on Mac | Change nginx port to `8080:80` in `docker-compose.yml` |
+| M1/M2/M3 image won't start | Add `platform: linux/amd64` under `ctfd:` in compose |
+| Wrong container name | Run `docker ps` and substitute actual name |
+| Uploads missing | Re-run Step 7 with correct container name from `docker ps` |
+| CTFd crash loop on startup | Run `docker compose down -v` then `docker compose up -d` for a clean slate |
